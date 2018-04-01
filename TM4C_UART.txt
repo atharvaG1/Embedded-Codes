@@ -1,0 +1,124 @@
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
+#include "driverlib/gpio.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/uart.h"
+#include <itoa.h>
+int y;
+char a1[6],a2[6],a3[6],a4[6],a5[6],a6[6];
+float g =300.1, h=71.2,i=300.1,j=71.2,k=300.1,l=71.2;
+String a= String(300.1),b= String(71.2),c= String(300.1),d= String(71.2),e= String(300.1), f= String (71.2);
+int b1=312,b2=323,b3=345,b4=356,b5=370,b6=32;
+int d1,d2,d3,d4,d5,d6;
+float c1=312.2,c2=323.3,c3=343.33,c4=343.2,c5=324.5,c6=443.3;
+//char value
+void init_uart3(void)
+{
+
+SysCtlPeripheralEnable(SYSCTL_PERIPH_UART3);
+SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+GPIOPinConfigure(GPIO_PA4_U3RX);
+GPIOPinConfigure(GPIO_PA5_U3TX);
+GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_4 | GPIO_PIN_5);
+UARTConfigSetExpClk(UART3_BASE, 120000000, 10000000,(UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
+
+/*
+SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+GPIOPinConfigure(GPIO_PA4_U0RX);
+GPIOPinConfigure(GPIO_PA5_U0TX);
+GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_4 | GPIO_PIN_5);
+
+ROM_UARTConfigSetExpClk(UART0_BASE, ROM_SysCtlClockGet(), 115200,UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE | UART_CONFIG_PAR_NONE));
+*/
+
+}
+
+/* void sendstring(char s)
+{
+  for (y=0;y<4;y++)
+ UARTCharPut(UART3_BASE,char(s[y]));
+   // Serial.println(s[i]);
+}
+
+*/
+void senddata(char v[]) 
+{
+ for (y=0;y<4;y++)
+ {
+ UARTCharPut(UART3_BASE,v[y]);
+ //Serial.println(value1[y]);
+ }
+ 
+}
+void setup() {
+  // put your setup code here, to run once:
+init_uart3();
+Serial.begin(9600);
+pinMode(74,OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly: 
+  digitalWrite(74,HIGH);
+ char value1[5],value2[5],value3[5],value4[5],value5[5],value6[5];
+ Serial.println("came here");
+ unsigned long t1= micros();
+
+ d1=floor(c1*10);
+ d2=floor(c2*10);
+ d3=floor(c3*10);
+ d4=floor(c4*10);
+ d5=floor(c5*10);
+ d6=floor(c6*10);
+ itoa( d1,value1,10);
+ itoa( d2,value2,10);
+ itoa( d3,value3,10);
+ itoa( d4,value4,10);
+ itoa( d5,value5,10);
+ itoa( d6,value6,10); 
+ //String s= String() +":"+String() +":"+String(b3) +":"+String(b4) +":"+String(b5) +":"+String(b6) +":";
+ //sprintf(value,"%f,%f,%f,%f,%f,%f ", g,h,i,j,k,l);
+ 
+ //sprintf(value,"%f:%f:%f:%f:%f:%f ", g,h,i,j,k,l);
+ //dtostrf(g,3,2,a1);
+ //dtostrf(h,3,2,a2);
+ //dtostrf(i,3,2,a3);
+ //dtostrf(j,3,2,a4);
+ //dtostrf(k,3,2,a5);
+ //dtostrf(l,3,2,a6);
+ //String s= "a:b:c:d:e:f:"
+ //for (i=0;i<=50;i++)
+ //UARTCharPut(UART3_BASE,'s' );
+ 
+ //String s= "300.0:91.0:301.0:71.0:301.0:61.0:" ;
+ //String s= String(g) +":"+String(h) +":"+String(i) +":"+String(j) +":"+String(k) +":"+String(l) +":";
+ //char s[12]= a1 +':'+a2 +':'+ a3 +':'+ a4+':'+a5 +':'+a6 +':';
+ //sendstring(value1);
+ /*for (y=0;y<4;y++)
+ {
+ UARTCharPut(UART3_BASE,value1[y] );
+ //Serial.println(value1[y]);
+ }*/
+ senddata(value1);
+ UARTCharPut(UART3_BASE,',' );
+ senddata(value2);
+ UARTCharPut(UART3_BASE,',' );
+ senddata(value3);
+ UARTCharPut(UART3_BASE,',' );
+ senddata(value4);
+ UARTCharPut(UART3_BASE,',' );
+ senddata(value5);
+ UARTCharPut(UART3_BASE,',' );
+ senddata(value6);
+ UARTCharPut(UART3_BASE,',' );
+ unsigned long t2= micros()-t1;
+ Serial.println(t2);
+ //Serial.println(value1);
+ digitalWrite(74,LOW);
+ delay(10000);
+}
