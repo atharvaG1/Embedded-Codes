@@ -32,7 +32,7 @@ SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC |   SYSCTL_OSC_MAIN | SYSCTL_XTA
 SysCtlPWMClockSet(SYSCTL_PWMDIV_64);
 
 
-   // Enable the peripherals used by this program.
+   // Enable the peripherals used in this program.
 
     //SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
 
